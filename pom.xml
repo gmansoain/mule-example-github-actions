@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>fc9e3283-a489-4e88-99aa-cceea4aa5ea1</groupId>
-	<artifactId>example-github-actions-2</artifactId>
+	<artifactId>example-github-actions</artifactId>
 	<version>1.0.0</version>
 	<packaging>mule-application</packaging>
 
-	<name>example-github-actions-2</name>
+	<name>example-github-actions</name>
 
 	<description/>
 	<properties>

@@ -1,0 +1,36 @@
+name: Build the project
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ master ]
+    
+jobs:
+  buildAndPublishToExchange:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Build with Maven
+      env:
+        MULE_CLIENT_ID: ${{ secrets.MULE_CLIENT_ID }}
+        MULE_CLIENT_SECRET: ${{ secrets.MULE_CLIENT_SECRET }}
+        MULE_ORG_ID: ${{ secrets.MULE_ORG_ID }}
+      run: mvn clean -B deploy -s .maven/settings.xml
+      
+  deployToCloudhub:
+    needs: buildAndPublishToExchange
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Deploy ot Cloudhub
+      env:
+        MULE_CLIENT_ID: ${{ secrets.MULE_CLIENT_ID }}
+        MULE_CLIENT_SECRET: ${{ secrets.MULE_CLIENT_SECRET }}
+        MULE_ORG_ID: ${{ secrets.MULE_ORG_ID }}
+        environment: "Production"
+        target: "GON-PS"
+        replicas: "1"
+        cores: "0.1"
+      run: mvn clean -B deploy -DmuleDeploy -s .maven/settings.xml
